@@ -96,3 +96,15 @@ void	*ft_calloc(size_t n, size_t size)
 	ft_bzero(ptr, size * n);
 	return ((void *)ptr);
 }
+
+void	ft_bzero(void *str, size_t n)
+{
+	char	*newstr;
+
+	newstr = (char *)str;
+	while (n != 0)
+	{
+		newstr[n -1] = 0;
+		n --;
+	}
+}
