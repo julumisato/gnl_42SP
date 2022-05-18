@@ -12,8 +12,7 @@
 
 #include "get_next_line.h"
 
-char	*read_from_fd_and_save(int fd, char *read_line);
-char	*make_return_line(char *read_line, char *ret_line);
+char	*read_and_save(int fd, char *stat_str);
 
 char	*get_next_line(int fd)
 {
@@ -22,47 +21,47 @@ char	*get_next_line(int fd)
 
 	if (BUFFER_SIZE <= 0 || fd < 0)
 		return (NULL);
-	read_line = read_from_fd_and_save(fd, read_line);
+	if (!read_line)
+		read_line = ft_calloc(1, sizeof(char));
+	while (ft_strchr(read_line, '\n') == NULL)
+	{
+		read_line = read_and_save(fd, read_line);
+	}
 	if (!read_line)
 		return (NULL);
 	ret_line = NULL;
 	ret_line = make_return_line(read_line, ret_line);
-//	read_line = clear_and_save_remaining(read_line);
+//	read_line = clear_and_save_remaining(read_line); limpar e guardar os próximos;
+	free(read_line); //tirar depois de fazer o clear_and_save_remaining
 	return (ret_line);
-}
-
-char	*read_from_fd_and_save(int fd, char *read_line)
-{
-	char	*buff;
-	ssize_t	read_bytes;
-
-	buff = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (!buff)
-		return (NULL);
-	while (ft_strchr(buff, '\n') == NULL)
-	{
-		read_bytes = read(fd, buff, BUFFER_SIZE);
-		if (read_bytes == -1)
-		{
-			free(buff);
-			return (NULL);
-		}
-		read_line = ft_strjoin(read_line, buff);
-	}
-	free(buff);
-	return (read_line);
 }
 
 char	*make_return_line(char *read_line, char *ret_line)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (read_line[i] != '\n')
 		i ++;
-	ret_line = malloc(i + 2);
-	if (!ret_line)
+	
+}
+
+char	*read_and_save(int fd, char *stat_str)
+{
+	ssize_t	read_bytes;
+	char	*buff;
+	char	*aux;
+
+	buff = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	read_bytes = read(fd, buff, BUFFER_SIZE);
+	if (read_bytes < 0)
+	{
+		free(buff);
 		return (NULL);
-	ft_strlcpy(ret_line, read_line, i + 2);
-	return (ret_line);
+	}
+	aux = malloc((ft_strlen(stat_str) + BUFFER_SIZE + 1 ) * sizeof(char));
+	aux = ft_strjoin(stat_str, buff);
+	free(buff);
+	free(stat_str);
+	return (aux);
 }

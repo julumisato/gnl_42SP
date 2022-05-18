@@ -44,31 +44,30 @@ size_t	ft_strlcpy(char *dest, const char *src, size_t n)
 char	*ft_strjoin(char *s1, char const *s2)
 {
 	char	*str;
-	size_t	len;
-	size_t	i;
+	ssize_t	len;
+	ssize_t	i;
+	ssize_t	j;
 
 	len = ft_strlen(s1) + ft_strlen(s2);
-	str = (char *)malloc (1 * (len + 1));
+	str = (char *)malloc(sizeof(char) * (len + 1));
 	if (str == NULL)
 		return (NULL);
 	i = 0;
-	while (i < len && *s1)
+	if (*s1)
 	{
-		str[i] = *s1;
-		s1 ++;
-		i ++;
+		while (s1[i])
+		{
+			str[i] = s1[i];
+			i ++;
+		}
 	}
-	while (i < len && *s2)
-	{
-		str[i] = *s2;
-		s2 ++;
-		i ++;
-	}
-	str[i] = '\0';
-	if (str == NULL)
-		return (NULL);
+	j = 0;
+	while (i < len && s2[j])
+		str[i++] = s2[j++];
+	str[len] = '\0';
 	return (str);
 }
+
 
 char	*ft_strchr(const char *str, int c)
 {
@@ -81,4 +80,19 @@ char	*ft_strchr(const char *str, int c)
 	if ((char)c == '\0' && *str == '\0')
 		return ((char *)str);
 	return (NULL);
+}
+
+void	*ft_calloc(size_t n, size_t size)
+{
+	void	*ptr;
+	size_t	total;
+
+	total = n * size;
+	if (n != 0 && total / n != size)
+		return (NULL);
+	ptr = (char *)malloc(n * size);
+	if (ptr == NULL)
+		return (NULL);
+	ft_bzero(ptr, size * n);
+	return ((void *)ptr);
 }
