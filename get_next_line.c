@@ -79,19 +79,18 @@ char	*read_and_save(int fd, char *stat_str)
 
 	buff = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	read_bytes = 1;
-	aux = NULL;
 	while (ft_strchr(stat_str, '\n') == NULL && read_bytes > 0)
 	{
+		aux = NULL;
 		read_bytes = read(fd, buff, BUFFER_SIZE);
 		if (read_bytes <= 0)
 		{
 			free(buff);
-			return (aux);
+			return (NULL);
 		}
 		aux = malloc((ft_strlen(stat_str) + BUFFER_SIZE + 1 ) * sizeof(char));
 		aux = ft_strjoin(stat_str, buff);
 		stat_str = aux;
-		free(aux);
 	}
 	free(buff);
 	return (stat_str);
