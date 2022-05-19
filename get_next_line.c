@@ -70,6 +70,7 @@ char	*make_return_line(char *read_line, char *ret_line)
 	return (NULL);
 }
 
+//AQUI ESTÁ O PROBLEMA, O WHILE PRECISA ESTAR AQUI MAS NÃO ESTÁ FUNCIONANDO
 char	*read_and_save(int fd, char *stat_str)
 {
 	ssize_t	read_bytes;
@@ -77,20 +78,21 @@ char	*read_and_save(int fd, char *stat_str)
 	char	*aux;
 
 	buff = malloc((BUFFER_SIZE + 1) * sizeof(char));
-	read_bytes = 0;
+	read_bytes = 1;
 	aux = NULL;
-	while (ft_strchr(aux, '\n') == NULL && read_bytes > 0)
+	while (ft_strchr(stat_str, '\n') == NULL && read_bytes > 0)
 	{
 		read_bytes = read(fd, buff, BUFFER_SIZE);
-		if (read_bytes < 0)
+		if (read_bytes <= 0)
 		{
 			free(buff);
-			return (NULL);
+			return (aux);
 		}
 		aux = malloc((ft_strlen(stat_str) + BUFFER_SIZE + 1 ) * sizeof(char));
 		aux = ft_strjoin(stat_str, buff);
-		free(stat_str);
+		stat_str = aux;
+		free(aux);
 	}
 	free(buff);
-	return (aux);
+	return (stat_str);
 }
