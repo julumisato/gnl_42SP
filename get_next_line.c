@@ -21,16 +21,16 @@ char	*get_next_line(int fd)
 	static char	*read_line;
 	char		*ret_line;
 
+	ret_line = NULL;
 	if (BUFFER_SIZE <= 0 || fd < 0)
 		return (NULL);
 	if (!read_line)
 		read_line = ft_calloc(1, sizeof(char));
 	read_line = read_and_save(fd, read_line);
-	if (!read_line)
+	if (read_line == NULL || *read_line == '\0')
 		return (NULL);
-	ret_line = NULL;
 	ret_line = make_return_line(read_line, ret_line);
-	read_line = clear_and_save_next(read_line); 
+	read_line = clear_and_save_next(read_line);
 	return (ret_line);
 }
 
@@ -70,28 +70,27 @@ char	*make_return_line(char *read_line, char *ret_line)
 	return (NULL);
 }
 
-//AQUI ESTÁ O PROBLEMA, O WHILE PRECISA ESTAR AQUI MAS NÃO ESTÁ FUNCIONANDO
 char	*read_and_save(int fd, char *stat_str)
 {
 	ssize_t	read_bytes;
 	char	*buff;
 	char	*aux;
 
-	buff = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	read_bytes = 1;
 	while (ft_strchr(stat_str, '\n') == NULL && read_bytes > 0)
 	{
 		aux = NULL;
+		buff = malloc((BUFFER_SIZE + 1) * sizeof(char));
 		read_bytes = read(fd, buff, BUFFER_SIZE);
 		if (read_bytes <= 0)
 		{
 			free(buff);
-			return (NULL);
+			return (stat_str);
 		}
 		aux = malloc((ft_strlen(stat_str) + BUFFER_SIZE + 1 ) * sizeof(char));
 		aux = ft_strjoin(stat_str, buff);
 		stat_str = aux;
+		free(buff);
 	}
-	free(buff);
 	return (stat_str);
 }
