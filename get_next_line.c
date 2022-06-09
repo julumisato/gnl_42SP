@@ -12,24 +12,21 @@
 
 #include "get_next_line.h"
 
-char	*read_and_save(int fd, char *stat_str);
-char	*make_return_line(char *read_line, char *ret_line);
-char	*clear_and_save_next(char *read_line);
+static char	*read_and_save(int fd, char *read_line);
+static char	*make_return_line(char *read_line);
+static char	*clear_and_save_next(char *read_line);
 
 char	*get_next_line(int fd)
 {
 	static char	*read_line;
 	char		*ret_line;
 
-	ret_line = NULL;
 	if (BUFFER_SIZE <= 0 || fd < 0)
 		return (NULL);
-	if (!read_line)
-		read_line = ft_calloc(1, sizeof(char));
 	read_line = read_and_save(fd, read_line);
 	if (read_line == NULL || *read_line == '\0')
 		return (NULL);
-	ret_line = make_return_line(read_line, ret_line);
+	ret_line = make_return_line(read_line);
 	read_line = clear_and_save_next(read_line);
 	return (ret_line);
 }
@@ -46,17 +43,21 @@ char	*clear_and_save_next(char *read_line)
 	size = ft_strlen(read_line) - i;
 	if (size > 0)
 	{
-		aux = malloc(size * sizeof(char));
+		aux = malloc(size + 1 * sizeof(char));
+		if (!aux)
+			return(NULL);
 		ft_strlcpy(aux, &read_line[i + 1], size);
 		free(read_line);
 		return(aux);
 	}
+	free(read_line);
 	return (NULL);
 }
 
-char	*make_return_line(char *read_line, char *ret_line)
+char	*make_return_line(char *read_line)
 {
 	size_t	i;
+	char	*ret_line;
 
 	i = 0;
 	while (read_line[i] != '\n' && read_line[i])
@@ -70,27 +71,26 @@ char	*make_return_line(char *read_line, char *ret_line)
 	return (NULL);
 }
 
-char	*read_and_save(int fd, char *stat_str)
+char	*read_and_save(int fd, char *read_line)
 {
 	ssize_t	read_bytes;
 	char	*buff;
-	char	*aux;
 
-	read_bytes = 1;
-	while (ft_strchr(stat_str, '\n') == NULL && read_bytes > 0)
+	read_bytes = BUFFER_SIZE;
+	buff = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	if (!buff)
+		return (NULL);
+	while (!ft_strchr(read_line, '\n') && read_bytes > 0)
 	{
-		aux = NULL;
-		buff = malloc((BUFFER_SIZE + 1) * sizeof(char));
 		read_bytes = read(fd, buff, BUFFER_SIZE);
-		if (read_bytes <= 0)
+		if (read_bytes < 0)
 		{
 			free(buff);
-			return (stat_str);
+			return (NULL);
 		}
-		aux = malloc((ft_strlen(stat_str) + BUFFER_SIZE + 1 ) * sizeof(char));
-		aux = ft_strjoin(stat_str, buff);
-		stat_str = aux;
-		free(buff);
+		buff[read_bytes] = '\0';
+		read_line = ft_strjoin(read_line, buff);
 	}
-	return (stat_str);
+	free(buff);
+	return (read_line);
 }

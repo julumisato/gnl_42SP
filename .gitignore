@@ -3,3 +3,6 @@ main.c
 a.out
 .vscode
 teste*
+new*
+*.code-workspace
+gnlTester
