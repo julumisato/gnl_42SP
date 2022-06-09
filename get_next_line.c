@@ -45,10 +45,10 @@ char	*clear_and_save_next(char *read_line)
 	{
 		aux = malloc(size + 1 * sizeof(char));
 		if (!aux)
-			return(NULL);
+			return (NULL);
 		ft_strlcpy(aux, &read_line[i + 1], size);
 		free(read_line);
-		return(aux);
+		return (aux);
 	}
 	free(read_line);
 	return (NULL);

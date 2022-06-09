@@ -48,12 +48,12 @@ char	*ft_strjoin(char *s1, char const *s2)
 	i = 0;
 	j = 0;
 	if (s1 == NULL)
-		s1 = ft_calloc(1, 1);
+		s1 = ft_strdup("");
 	if (!s1 || !s2)
 		return (NULL);
 	while (s1[i])
 		i ++;
-	while(s2[j])
+	while (s2[j])
 		j ++;
 	len = i + j;
 	str = malloc(sizeof(char) * len + 1);
@@ -101,31 +101,4 @@ char	*ft_strdup(const char *s)
 		i++;
 	}
 	return (dup);
-}
-
-void	*ft_calloc(size_t n, size_t size)
-{
-	void	*ptr;
-	size_t	total;
-
-	total = n * size;
-	if (n != 0 && total / n != size)
-		return (NULL);
-	ptr = (char *)malloc(n * size);
-	if (ptr == NULL)
-		return (NULL);
-	ft_bzero(ptr, size * n);
-	return ((void *)ptr);
-}
-
-void	ft_bzero(void *str, size_t n)
-{
-	char	*newstr;
-
-	newstr = (char *)str;
-	while (n != 0)
-	{
-		newstr[n -1] = 0;
-		n --;
-	}
 }
