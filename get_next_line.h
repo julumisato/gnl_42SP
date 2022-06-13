@@ -6,7 +6,7 @@
 /*   By: jusato <jusato@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/04 23:26:50 by jusato            #+#    #+#             */
-/*   Updated: 2022/06/09 18:33:22 by jusato           ###   ########.fr       */
+/*   Updated: 2022/06/11 23:37:14 by jusato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include <stdlib.h>
 # include <unistd.h>
-# include <sys/types.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42

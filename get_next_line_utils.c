@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jusato <jusato@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/18 16:24:13 by jusato            #+#    #+#             */
-/*   Updated: 2022/05/18 16:24:13 by jusato           ###   ########.fr       */
+/*   Created: 2022/05/04 23:26:43 by jusato            #+#    #+#             */
+/*   Updated: 2022/06/11 21:03:22 by jusato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ size_t	ft_strlcpy(char *dest, const char *src, size_t n)
 char	*ft_strjoin(char *s1, char const *s2)
 {
 	char	*str;
-	ssize_t	len;
-	ssize_t	i;
-	ssize_t	j;
+	size_t	len;
+	size_t	i;
+	size_t	j;
 
 	i = 0;
 	j = 0;
